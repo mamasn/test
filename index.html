@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>leaflet-map-simple</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
 
@@ -19,11 +18,22 @@
 <body>
 
   <!-- Display the map and title with HTML division tags  -->
-  <div id="map-title">EDIT map title</div>
+  <div id="map-title">KOIMHTHPIO</div>
   <div id="map"></div>
 
   <!-- Create the interactive map content with JavaScript (.js) -->
-  <script>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/_2.js"></script>
+        <script>
 
   /* Set up the initial map center and zoom level */
   var map = L.map('map', {
@@ -33,17 +43,147 @@
     tap: false
   });
 
-  /* display basemap tiles -- see others at https://leaflet-extras.github.io/leaflet-providers/preview/ */
-  L.tileLayer(
-    'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://osm.org/copyright">\
-        OpenStreetMap</a> contributors, &copy;\
-        <a href="https://carto.com/attribution">CARTO</a>'
-  }).addTo(map);
+  var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a>Designed by NIKOLAOS MAMAS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        map.createPane('pane_GoogleSatellite_0');
+        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
+        var layer_GoogleSatellite_0 = L.tileLayer('http://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 22
+        });
+        layer_GoogleSatellite_0;
+        map.addLayer(layer_GoogleSatellite_0);
+        map.createPane('pane_GoogleTerrain_1');
+        map.getPane('pane_GoogleTerrain_1').style.zIndex = 401;
+        var layer_GoogleTerrain_1 = L.tileLayer('https://mamasn.github.io/cemet_tiles/{z}/{x}/{y}.png', {
+            pane: 'pane_GoogleTerrain_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 22
+        });
+        layer_GoogleTerrain_1;
+        map.addLayer(layer_GoogleTerrain_1);
+        function pop__2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NMID'] !== null ? autolinker.link(feature.properties['NMID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____'] !== null ? autolinker.link(feature.properties['N_____'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____2'] !== null ? autolinker.link(feature.properties['N_____2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____1'] !== null ? autolinker.link(feature.properties['N_____1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____12'] !== null ? autolinker.link(feature.properties['N_____12'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____22'] !== null ? autolinker.link(feature.properties['N_____22'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____23'] !== null ? autolinker.link(feature.properties['N_____23'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____3'] !== null ? autolinker.link(feature.properties['N_____3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____32'] !== null ? autolinker.link(feature.properties['N_____32'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____4'] !== null ? autolinker.link(feature.properties['N_____4'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____42'] !== null ? autolinker.link(feature.properties['N_____42'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____5'] !== null ? autolinker.link(feature.properties['N_____5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['N_____52'] !== null ? autolinker.link(feature.properties['N_____52'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
 
-  /* Display a point marker with pop-up text */
-  L.marker([41.77, -72.69]).addTo(map) // EDIT marker coordinates
-  .bindPopup("Insert pop-up text here"); // EDIT pop-up text message
+        function style__2_0() {
+            return {
+                pane: 'pane__2',
+                opacity: 1,
+                color: 'rgba(227,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane__2');
+        map.getPane('pane__2').style.zIndex = 402;
+        map.getPane('pane__2').style['mix-blend-mode'] = 'normal';
+        var layer__2 = new L.geoJson(json__2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json__2',
+            layerName: 'layer__2',
+            pane: 'pane__2',
+            onEachFeature: pop__2,
+            style: style__2_0,
+        });
+        bounds_group.addLayer(layer__2);
+        map.addLayer(layer__2);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/_2.png" /> ΞΞΞ—ΞΞ‘Ξ¤Ξ‘': layer__2,"KOIMHTHPIO": layer_GoogleTerrain_1,"Google Satellite": layer_GoogleSatellite_0,}).addTo(map);
+        setBounds();
+        
+map.addControl(new L.Control.Search({
+            layer: layer__2,
+            initial: false,
+            hideMarkerOnCollapse: true,
+           onEachFeature: pop__2, 
+propertyName: 'N_____'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+e.layer.openPopup().openOn(map);
+
+L.LogoControl = L.Control.extend({
+    options: {
+        position: 'bottomright'
+        //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
+    },
+
+    onAdd: function (map) {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control logo-control');
+        var button = L.DomUtil.create('a', '', container);
+            button.innerHTML = '<img width="100%" class="logo-control-img" src="./greeninfo.png">';
+        L.DomEvent.disableClickPropagation(button);
+        container.title = "mamas.nikolas@gmail.com - 99753879";
+
+        return container;
+    },
+});
+
+new L.LogoControl().addTo(map)
 
   </script>
 </body>
